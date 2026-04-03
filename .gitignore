@@ -1,0 +1,28 @@
+# Environment — NEVER commit
+.env
+.env.local
+.env*.local
+*.json.key
+service-account*.json
+
+# Angular build
+dist/
+.angular/
+
+# Node
+node_modules/
+api/node_modules/
+npm-debug.log*
+
+# Vercel
+.vercel/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/settings.json
+.idea/
+
+.vercel
