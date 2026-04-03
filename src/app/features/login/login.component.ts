@@ -2,7 +2,6 @@ import {
   Component,
   inject,
   signal,
-  computed,
   ChangeDetectionStrategy,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -49,7 +48,7 @@ import { AuthService } from '../../core/auth/auth.service';
             <input
               id="username"
               class="form-control"
-              [class.error]="touched() && !username()"
+              [class.error]="touched() && !usernameModel.trim()"
               type="text"
               placeholder="Enter your username"
               [(ngModel)]="usernameModel"
@@ -65,7 +64,7 @@ import { AuthService } from '../../core/auth/auth.service';
               <input
                 id="password"
                 class="form-control"
-                [class.error]="touched() && !password()"
+                [class.error]="touched() && !passwordModel"
                 [type]="showPassword() ? 'text' : 'password'"
                 placeholder="Enter your password"
                 [(ngModel)]="passwordModel"
@@ -97,7 +96,7 @@ import { AuthService } from '../../core/auth/auth.service';
           <button
             type="submit"
             class="btn btn-primary login-btn"
-            [disabled]="auth.loading() || !isFormValid()"
+            [disabled]="auth.loading() || !usernameModel.trim() || !passwordModel"
           >
             @if (auth.loading()) {
               <span class="spinner"></span>
@@ -240,24 +239,17 @@ export class LoginComponent {
   readonly auth = inject(AuthService);
   private readonly router = inject(Router);
 
-  // Signal-driven form state
   usernameModel = '';
   passwordModel = '';
 
-  readonly username = signal('');
-  readonly password = signal('');
   readonly showPassword = signal(false);
   readonly touched = signal(false);
-
-  readonly isFormValid = computed(
-    () => this.usernameModel.trim().length > 0 && this.passwordModel.length > 0
-  );
 
   async handleLogin(): Promise<void> {
     this.touched.set(true);
     this.auth.clearError();
 
-    if (!this.isFormValid()) return;
+    if (!this.usernameModel.trim() || !this.passwordModel) return;
 
     const ok = await this.auth.login({
       username: this.usernameModel.trim(),
