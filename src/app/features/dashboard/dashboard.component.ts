@@ -6,16 +6,17 @@ import {
   signal,
   computed,
 } from '@angular/core';
-import { RouterLink } from '@angular/router';
+
+import { RouterLink, } from '@angular/router';
 import { ScheduleService } from '../../core/services/schedule.service';
 import { RecordsService } from '../../core/services/records.service';
 import { AuthService } from '../../core/auth/auth.service';
-
+import { TitleCasePipe } from '@angular/common';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink],
+  imports: [RouterLink,TitleCasePipe],
   template: `
     <div class="dashboard page-enter">
 
